@@ -3,21 +3,30 @@ package main.java.taller;
 
 
 public class MyClass {
+
+  static Boolean LOG = false;
+  
   public static void main(String args[]) {
-    
-    String str = "abcabac"; 
-    
-   String expected = "aba";
+
+   test("aba", "aba");
+   test("abac", "aba"); 
+   test("abaeefee", "eefee");
+   test("tacag", "aca");
+   test("wegeeksskeegyuwe", "geeksskeeg");
    
-   // String str = "abaeefee"; // eefeeaba i =  e j = a   p = aba
-    
-   // String expected = "eefee";
-    
+  }
+  
+  public static void test(String str, String expected){
     String returned = checkLongest(str);
     
-    System.out.println(returned);
-    System.out.println(expected.equals(returned));
-    
+    System.out.println("for entry "+ str + " was expecting " +expected + " - Got "+ returned+ " - success = "+ 
+        expected.equals(returned));
+  }
+  
+  public static void log(String log){
+      if(LOG){
+         System.out.println(log);
+      }
   }
   
   public static String checkLongest(String str){
@@ -31,28 +40,42 @@ public class MyClass {
         for(int j =0, i = 0; ; ){
             
             if(i == str.length()){
+                palindrome = new StringBuilder("");
+                log("break ");
                 break;
             }else if(j == str.length()) {
-                i++;
+                //i++;
                 j = 0;
                 palindrome = new StringBuilder("");
+                log("reset j - increasing i to " +i);
             }
             
             char c = str.charAt(i);
             if( c != reversedStr.charAt(j)){
-                j++;
+                if(palindrome.length() > 0){
+                    j = 0;
+                    palindrome = new StringBuilder("");
+                    log("reseting j to 0  - closing palindrome "+bigger);
+                }else {
+                    j++;
+                    log("increasing j to "+j);
+                }
+                
             } else{
                 palindrome.append(""+c);
                 i++;
                 j++;
+                log("increasing j to "+j + " increasing i to " + i + " - palindrome "+palindrome.toString());
+            }
+            
+            if(palindrome.length() > bigger.length()){
+                bigger = palindrome.toString();
+                log("found "+bigger);
             }
 
          }  
          
-        if(palindrome.length() > bigger.length()){
-            bigger = palindrome.toString();
-            System.out.println("found "+bigger);
-        }
+        
          
         return bigger;
    
